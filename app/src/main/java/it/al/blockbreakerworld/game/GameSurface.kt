@@ -1,4 +1,4 @@
-package it.al.blockbreakerworld
+package it.al.blockbreakerworld.game
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -66,8 +66,10 @@ class GameSurface(context: Context?) : SurfaceView(context),
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-            Input.touchPosition.x = pxToDp(event.x)
-            Input.touchPosition.y = pxToDp(event.y)
+            Input.touchPosition.x =
+                pxToDp(event.x)
+            Input.touchPosition.y =
+                pxToDp(event.y)
 
         return true
     }

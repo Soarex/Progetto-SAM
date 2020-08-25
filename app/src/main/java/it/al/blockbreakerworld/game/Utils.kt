@@ -1,6 +1,6 @@
-package it.al.blockbreakerworld
+package it.al.blockbreakerworld.game
 
-fun checkCollision(dynamicEntity: Entity, speed: Vec2,  staticEntity: Entity): Vec2 {
+fun checkCollision(dynamicEntity: Entity, speed: Vec2, staticEntity: Entity): Vec2 {
     val e1 = dynamicEntity; val e2 = staticEntity
     val res = Vec2()
 

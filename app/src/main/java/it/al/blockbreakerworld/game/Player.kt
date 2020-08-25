@@ -1,14 +1,24 @@
-package it.al.blockbreakerworld
+package it.al.blockbreakerworld.game
 
 import android.graphics.Color
 
-class Player(position: Vec2 = Vec2(pxToDp(ScreenMetrics.width / 2f), pxToDp(ScreenMetrics.height.toFloat() - 100)), size: Vec2 = Vec2(500f, 200f)): Entity(position, size,
+class Player(position: Vec2 = Vec2(
+    pxToDp(ScreenMetrics.width / 2f),
+    pxToDp(ScreenMetrics.height.toFloat() - 100)
+), size: Vec2 = Vec2(
+    500f,
+    200f
+)
+): Entity(position, size,
     Color.rgb(0, 100, 255)
 ) {
     var speed = 500f
 
     override fun onInit() {
-        position = Vec2(pxToDp(ScreenMetrics.width.toFloat()) /  2, pxToDp(ScreenMetrics.height.toFloat() - 300))
+        position = Vec2(
+            pxToDp(ScreenMetrics.width.toFloat()) / 2,
+            pxToDp(ScreenMetrics.height.toFloat() - 300)
+        )
         scale = Vec2(100f, 20f)
 
         Input.touchPosition.x = position.x

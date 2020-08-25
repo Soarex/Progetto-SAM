@@ -1,8 +1,8 @@
-package it.al.blockbreakerworld
+package it.al.blockbreakerworld.game
 
 import android.graphics.Canvas
 import android.view.SurfaceHolder
-import java.util.*
+import it.al.blockbreakerworld.game.GameSurface
 
 class GameThread(private val gameSurface: GameSurface, private val surfaceHolder: SurfaceHolder) : Thread() {
 

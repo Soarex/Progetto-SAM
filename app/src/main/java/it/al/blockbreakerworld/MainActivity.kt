@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import it.al.blockbreakerworld.game.Game
 
 class MainActivity : AppCompatActivity() {
     private lateinit var game: Game

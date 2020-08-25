@@ -1,4 +1,4 @@
-package it.al.blockbreakerworld
+package it.al.blockbreakerworld.game
 
 import android.graphics.Canvas
 
