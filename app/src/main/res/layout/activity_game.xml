@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <it.al.blockbreakerworld.game.GameSurface
+        android:id="@+id/gameSurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:padding="16dp"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/gameOverText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Game Over"
+            android:textAlignment="center"
+            android:textColor="#95FF00"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+            <Button
+                style="@style/StandardButton"
+                android:text="@string/btn_retry"
+                android:id="@+id/retryButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                style="@style/StandardButton"
+                android:text="@string/btn_exit"
+                android:id="@+id/exitButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+</FrameLayout>

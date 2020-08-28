@@ -8,7 +8,7 @@ import java.lang.Exception
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class JsonParser(){
+class BlocksJsonParser(){
     private lateinit var jsonDocument: String
     private lateinit var blocks: JSONArray
     private var currentIndex = 0

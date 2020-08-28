@@ -16,11 +16,15 @@ class BlockGrid {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
-            val parser = JsonParser()
-            if(!parser.downloadJson("https://api.jsonbin.io/b/5f454393993a2e110d362865"))
-                Log.e("Test", "Errore di download")
+            val parser = BlocksJsonParser()
+            if(!parser.downloadJson(Game.levelUrl)) {
+                Game.onError()
+                Game.gameOver = true
+                return@launch
+            }
 
-            //withContext(Dispatchers.Default) {
+            withContext(Dispatchers.Default) {
+                Game.brickCount = -1
                 blocks = Array(horizontalBlockCount * verticalBlockCount) {i -> Block(
                     Vec2(
                         ((i % horizontalBlockCount) * blockSize.x) + blockSize.x / 2,
@@ -30,11 +34,13 @@ class BlockGrid {
                         if(c != 0) {
                             color = BlockColors.colors[c - 1]
                             destroyed = false
+                            Game.brickCount++
                         }
                         else destroyed = true
                         onInit()
                 }}
-            //}
+                Game.brickCount++
+            }
         }
     }
 }

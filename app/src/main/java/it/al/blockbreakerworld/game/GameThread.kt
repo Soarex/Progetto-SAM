@@ -23,7 +23,7 @@ class GameThread(private val gameSurface: GameSurface, private val surfaceHolder
             try {
                 canvas = surfaceHolder.lockCanvas()
                 synchronized(canvas) {
-                    gameSurface.onUpdate(deltaTime)
+                    if(!Game.gameOver) gameSurface.onUpdate(deltaTime)
                     gameSurface.draw(canvas)
                 }
             } catch (e: Exception) {

@@ -1,5 +1,14 @@
 package it.al.blockbreakerworld.game
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.VectorDrawable
+import android.os.Build
+import androidx.appcompat.content.res.AppCompatResources
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+
 fun checkCollision(dynamicEntity: Entity, speed: Vec2, staticEntity: Entity): Vec2 {
     val e1 = dynamicEntity; val e2 = staticEntity
     val res = Vec2()
@@ -25,4 +34,20 @@ fun dpToPx(dp: Float): Float {
 
 fun pxToDp(px: Float): Float {
     return px / ScreenMetrics.density
+}
+
+fun getBitmapDescriptor(id: Int, color: Int, context: Context): BitmapDescriptor {
+    val vectorDrawable = (AppCompatResources.getDrawable(context, id) as VectorDrawable)
+
+    val h = vectorDrawable.intrinsicHeight
+    val w = vectorDrawable.intrinsicWidth
+
+    vectorDrawable.setBounds(0, 0, w, h)
+
+    val bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bm)
+
+    vectorDrawable.setTint(color)
+    vectorDrawable.draw(canvas)
+    return BitmapDescriptorFactory.fromBitmap(bm)
 }

@@ -15,7 +15,7 @@ class MainLayer : GameLayer {
         player.onInit()
         ball.position = Vec2(
             player.position.x,
-            player.position.y - 25
+            player.position.y - 30
         )
         ball.onInit()
         blockGrid.onInit()
@@ -37,5 +37,10 @@ class MainLayer : GameLayer {
     override fun onUpdate(deltaTime: Float) {
         ball.onUpdate(deltaTime)
         player.onUpdate(deltaTime)
+
+        if(Game.brickCount == 0) {
+            Game.gameOver = true
+            Game.onWin()
+        }
     }
 }

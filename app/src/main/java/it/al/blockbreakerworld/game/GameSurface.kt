@@ -3,18 +3,23 @@ package it.al.blockbreakerworld.game
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
+import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 
-class GameSurface(context: Context?) : SurfaceView(context),
+class GameSurface : SurfaceView,
     SurfaceHolder.Callback {
     private lateinit var _gameThread: GameThread
-    val layer = MainLayer()
+    var layer = MainLayer()
 
     val gameThread
         get() = _gameThread
+
+    constructor(context: Context?): super(context)
+    constructor(context: Context?, attrs: AttributeSet?): super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int): super(context, attrs, defStyle)
 
     fun onInit() {
         layer.onInit()
@@ -72,5 +77,11 @@ class GameSurface(context: Context?) : SurfaceView(context),
                 pxToDp(event.y)
 
         return true
+    }
+
+    fun onRetry() {
+        Game.gameOver = false
+        layer = MainLayer()
+        layer.onInit()
     }
 }

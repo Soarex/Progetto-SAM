@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Block Breaker World</string>
+    <string name="btn_exit">Esci</string>
+    <string name="btn_retry">Riprova</string>
+    <string name="txt_game_over">Game Over</string>
+    <string name="txt_win">Vittoria</string>
+    <string name="txt_loading">Caricando</string>
+    <string name="txt_error">Errore nel download</string>
+    <string name="txt_level_select">Seleziona livello</string>
+    <string name="btn_begin">Inizia</string>
+</resources>

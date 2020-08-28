@@ -1,20 +1,21 @@
 package it.al.blockbreakerworld.game
 
-class Ball(position: Vec2 = Vec2(), size: Vec2 = Vec2(
-    1f,
-    1f
-)
-): Entity(position, size) {
-    val speed: Float = 250f
+import android.util.Log
+
+class Ball(position: Vec2 = Vec2(), size: Vec2 = Vec2(1f, 1f)): Entity(position, size) {
+    var speed: Float = 250f
     var direction = Vec2(1f, 1f)
     var player: Player? = null
     var blockGrid: BlockGrid? = null
+
+
 
     override fun onInit() {
 
     }
 
     override fun onUpdate(deltaTime: Float) {
+
         val p = player
 
         if(p != null) {
@@ -26,8 +27,18 @@ class Ball(position: Vec2 = Vec2(), size: Vec2 = Vec2(
                 ),
                 p
             )
-            if(collision.x != 0f) direction.x *= -1
-            if(collision.y != 0f) direction.y *= -1
+
+            if(collision.x != 0f) {
+                direction.x *= -1
+                Game.brickSoundPlayer.seekTo(0)
+                Game.brickSoundPlayer.start()
+            }
+
+            if(collision.y != 0f) {
+                direction.y *= -1
+                Game.brickSoundPlayer.seekTo(0)
+                Game.brickSoundPlayer.start()
+            }
         }
 
         val g = blockGrid
@@ -44,8 +55,23 @@ class Ball(position: Vec2 = Vec2(), size: Vec2 = Vec2(
                     e
                 )
 
-                if (collision.x != 0f) { direction.x *= -1; e.destroyed = true; break}
-                if (collision.y != 0f) { direction.y *= -1; e.destroyed = true; break}
+                if (collision.x != 0f) {
+                    direction.x *= -1
+                    e.destroyed = true
+                    Game.brickCount--
+                    Game.brickSoundPlayer.seekTo(0)
+                    Game.brickSoundPlayer.start()
+                    break
+                }
+
+                if (collision.y != 0f) {
+                    direction.y *= -1
+                    e.destroyed = true
+                    Game.brickCount--
+                    Game.brickSoundPlayer.seekTo(0)
+                    Game.brickSoundPlayer.start()
+                    break
+                }
             }
         }
 
@@ -55,11 +81,18 @@ class Ball(position: Vec2 = Vec2(), size: Vec2 = Vec2(
         ) direction.x = -1f
         if(position.x <= 0) direction.x = 1f
 
-        if(position.y >= pxToDp(ScreenMetrics.height.toFloat())) direction.y = -1f
+        if(position.y >= pxToDp(ScreenMetrics.height.toFloat()))
+            onGameOver()
+
         if(position.y <= 0) direction.y = 1f
 
         position.x += speed * deltaTime * direction.x
         position.y += speed * deltaTime * direction.y
+    }
 
+    fun onGameOver() {
+        Game.gameOverSoundPlayer.seekTo(0)
+        Game.gameOverSoundPlayer.start()
+        Game.onGameOver()
     }
 }
