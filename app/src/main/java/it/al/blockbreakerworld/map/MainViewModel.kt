@@ -12,6 +12,10 @@ class MainViewModel : ViewModel() {
     val downloadError: LiveData<Boolean>
         get() = _downloadError
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
     private val _levels = MutableLiveData<MutableList<Level>>()
     val levels: LiveData<MutableList<Level>>
         get() = _levels
@@ -25,11 +29,21 @@ class MainViewModel : ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
 
+            _isLoading.postValue(true)
             if(!parser.downloadJson("https://api.jsonbin.io/b/5f4544e94d8ce411138088e0/4")) {
+                _isLoading.postValue(false)
                 _downloadError.postValue(true)
-                while (!parser.downloadJson("https://api.jsonbin.io/b/5f4544e94d8ce411138088e0/4")) delay(3000)
+                var success = false
+                while (!success) {
+                    _downloadError.postValue(true)
+                    delay(3000)
+                    _downloadError.postValue(false)
+                    _isLoading.postValue(true)
+                    success = parser.downloadJson("https://api.jsonbin.io/b/5f4544e94d8ce411138088e0/4")
+                    _isLoading.postValue(false)
+                }
             }
-
+            _isLoading.postValue(false)
             _downloadError.postValue(false)
             withContext(Dispatchers.Default) {
                 val res = LinkedList<Level>()

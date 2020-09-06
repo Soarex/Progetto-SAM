@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         viewModel.levels.observe(this, Observer {
-            _loadingBar.visibility = View.VISIBLE
             map.clear()
             for(i in 0 until it.size)
                 map.addMarker(
@@ -86,7 +85,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     layoutInflater
                 )
             )
-            _loadingBar.visibility = View.GONE
+        })
+
+        viewModel.isLoading.observe(this, Observer {
+            _loadingBar.visibility = if(it) View.VISIBLE else View.GONE
         })
 
         viewModel.downloadError.observe(this, Observer {
