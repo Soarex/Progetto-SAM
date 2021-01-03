@@ -25,12 +25,12 @@ class MainViewModel : ViewModel() {
         get() = _averageLocation
 
     init {
-        val parser = LevelJsonParser()
+        val parser = LevelListJsonParser()
 
         CoroutineScope(Dispatchers.IO).launch {
 
             _isLoading.postValue(true)
-            if(!parser.downloadJson("https://api.jsonbin.io/b/5f4544e94d8ce411138088e0/4")) {
+            if(!parser.downloadJson("https://api.jsonbin.io/b/5fe0bcd987e11161f87d6089"/*"https://api.jsonbin.io/b/5f4544e94d8ce411138088e0/4"*/)) {
                 _isLoading.postValue(false)
                 _downloadError.postValue(true)
                 var success = false
@@ -39,7 +39,7 @@ class MainViewModel : ViewModel() {
                     delay(3000)
                     _downloadError.postValue(false)
                     _isLoading.postValue(true)
-                    success = parser.downloadJson("https://api.jsonbin.io/b/5f4544e94d8ce411138088e0/4")
+                    success = parser.downloadJson("https://api.jsonbin.io/b/5fe0bcd987e11161f87d6089")
                     _isLoading.postValue(false)
                 }
             }

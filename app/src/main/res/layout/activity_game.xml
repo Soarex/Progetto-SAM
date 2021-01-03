@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <it.al.blockbreakerworld.game.GameSurface
+    <it.al.blockbreakerworld.engine.GameSurface
         android:id="@+id/gameSurface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -1,10 +1,9 @@
-package it.al.blockbreakerworld.game
+package it.al.blockbreakerworld.engine
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.VectorDrawable
-import android.os.Build
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -28,8 +27,17 @@ fun checkCollision(dynamicEntity: Entity, speed: Vec2, staticEntity: Entity): Ve
     return res
 }
 
-fun dpToPx(dp: Float): Float {
-    return dp * ScreenMetrics.density
+fun checkOverlap(e1: Entity, e2: Entity): Boolean {
+    if(e1.position.x + e1.scale.x / 2 > e2.position.x - e2.scale.x / 2 &&
+        e1.position.x - e1.scale.x / 2 < e2.position.x + e2.scale.x / 2 &&
+        e1.position.y + e1.scale.y / 2 > e2.position.y - e2.scale.y / 2 &&
+        e1.position.y - e1.scale.y / 2 < e2.position.y + e2.scale.y / 2) return true
+
+    return false
+}
+
+fun dpToPx(dp: Float): Int {
+    return (dp * ScreenMetrics.density).toInt()
 }
 
 fun pxToDp(px: Float): Float {

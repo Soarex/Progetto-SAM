@@ -2,28 +2,25 @@ package it.al.blockbreakerworld.game
 
 import android.content.Context
 import android.media.MediaPlayer
-import it.al.blockbreakerworld.R
 
 object Game {
-    lateinit var context: Context
-
     var levelUrl: String = ""
-    var brickCount: Int = -1
-    var gameOver: Boolean = false
+    var targetCount: Int = -1
+    var maxMisses: Int = -1
+    var currentMisses: Int = -1
 
     lateinit var brickSoundPlayer: MediaPlayer
     lateinit var gameOverSoundPlayer: MediaPlayer
 
-    private val gameOverCallbacks = MutableList(0) { { ; } }
-    private val winCallbacks = MutableList(0) { { ; } }
-    private val errorCallbacks = MutableList(0) { { ; } }
+    private val gameOverCallbacks = mutableListOf<() -> Unit>()
+    private val winCallbacks = mutableListOf<() -> Unit>()
+    private val errorCallbacks = mutableListOf<() -> Unit>()
 
     fun addGameOverCallback(callback: () -> Unit) {
         gameOverCallbacks.add(callback)
     }
 
     fun onGameOver() {
-        gameOver = true
         for(c in gameOverCallbacks)
             c.invoke()
     }
@@ -47,9 +44,14 @@ object Game {
     }
 
     fun clear() {
-        brickCount = 0
+        targetCount = -1
+        maxMisses = -1
+        currentMisses = -1
         gameOverCallbacks.clear()
         winCallbacks.clear()
+    }
+
+    fun release() {
         brickSoundPlayer.release()
         gameOverSoundPlayer.release()
     }

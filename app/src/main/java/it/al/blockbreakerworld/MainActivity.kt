@@ -13,7 +13,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import it.al.blockbreakerworld.game.getBitmapDescriptor
+import it.al.blockbreakerworld.engine.getBitmapDescriptor
 import it.al.blockbreakerworld.map.CustomInfoWindow
 import it.al.blockbreakerworld.map.Level
 import it.al.blockbreakerworld.map.MainViewModel

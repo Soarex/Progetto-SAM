@@ -1,8 +1,11 @@
-package it.al.blockbreakerworld.game
+package it.al.blockbreakerworld.engine
 
 import android.graphics.Canvas
+import android.os.Build
+import android.util.Log
 import android.view.SurfaceHolder
-import it.al.blockbreakerworld.game.GameSurface
+import androidx.annotation.RequiresApi
+import it.al.blockbreakerworld.game.Game
 
 class GameThread(private val gameSurface: GameSurface, private val surfaceHolder: SurfaceHolder) : Thread() {
 
@@ -11,20 +14,36 @@ class GameThread(private val gameSurface: GameSurface, private val surfaceHolder
     private val ticksPerSecond = 1000 / FPS
 
     private var _deltaTime = 0f
-    val deltaTime
-    get() = _deltaTime
+    private val renderer = Renderer(gameSurface.context)
+
+    var touchRegistered = false
 
     override fun run() {
         var startTime = System.nanoTime()
+        EngineEvents.onInit()
 
-        gameSurface.onInit()
         while (running) {
             var canvas: Canvas? = null
             try {
-                canvas = surfaceHolder.lockCanvas()
+
+                canvas = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) surfaceHolder.lockHardwareCanvas()
+                else surfaceHolder.lockCanvas()
+
                 synchronized(canvas) {
-                    if(!Game.gameOver) gameSurface.onUpdate(deltaTime)
+                    if(touchRegistered) {
+                        touchRegistered = false
+                        Input.onTouchBegin()
+                    }
+
+                    for(e in EntityManager.getEntities()) {
+                        if(!e.enabled) continue
+
+                        e.update()
+                        renderer.addEntity(e)
+                    }
+
                     gameSurface.draw(canvas)
+                    renderer.onDraw(canvas)
                 }
             } catch (e: Exception) {
             } finally {
@@ -42,6 +61,7 @@ class GameThread(private val gameSurface: GameSurface, private val surfaceHolder
             }
 
             _deltaTime = (System.nanoTime() - startTime) / 1000000000f
+            Time.deltaTime = _deltaTime
             startTime = System.nanoTime()
         }
     }

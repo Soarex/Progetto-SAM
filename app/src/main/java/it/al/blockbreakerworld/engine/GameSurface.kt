@@ -1,38 +1,20 @@
-package it.al.blockbreakerworld.game
+package it.al.blockbreakerworld.engine
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-
+import android.view.View
 
 class GameSurface : SurfaceView,
     SurfaceHolder.Callback {
     private lateinit var _gameThread: GameThread
-    var layer = MainLayer()
-
-    val gameThread
-        get() = _gameThread
 
     constructor(context: Context?): super(context)
     constructor(context: Context?, attrs: AttributeSet?): super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int): super(context, attrs, defStyle)
-
-    fun onInit() {
-        layer.onInit()
-    }
-
-    fun onUpdate(deltaTime: Float) {
-        layer.onUpdate(deltaTime)
-    }
-
-    override fun draw(canvas: Canvas) {
-        super.draw(canvas)
-        layer.onDraw(canvas)
-    }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         ScreenMetrics.height = resources.displayMetrics.heightPixels
@@ -68,7 +50,6 @@ class GameSurface : SurfaceView,
         this.holder.addCallback(this)
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
             Input.touchPosition.x =
@@ -76,12 +57,8 @@ class GameSurface : SurfaceView,
             Input.touchPosition.y =
                 pxToDp(event.y)
 
+        if(event.action == MotionEvent.ACTION_DOWN)
+            _gameThread.touchRegistered = true
         return true
-    }
-
-    fun onRetry() {
-        Game.gameOver = false
-        layer = MainLayer()
-        layer.onInit()
     }
 }
