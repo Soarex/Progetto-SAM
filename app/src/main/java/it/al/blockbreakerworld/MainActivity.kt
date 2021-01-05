@@ -7,16 +7,16 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
+import androidx.room.Room
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import it.al.blockbreakerworld.game.getBitmapDescriptor
-import it.al.blockbreakerworld.map.CustomInfoWindow
-import it.al.blockbreakerworld.map.Level
-import it.al.blockbreakerworld.map.MainViewModel
+import it.al.blockbreakerworld.database.AppDatabase
+import it.al.blockbreakerworld.engine.getBitmapDescriptor
+import it.al.blockbreakerworld.map.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -25,20 +25,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private val _loadingBar: View by lazy(LazyThreadSafetyMode.NONE) { loadingBar }
     private val _errorBar: View by lazy(LazyThreadSafetyMode.NONE) { errorBar }
 
+    private val _markerDialog by lazy(LazyThreadSafetyMode.NONE) { MarkerDialog() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         _mapView.onCreate(savedInstanceState)
         _mapView.getMapAsync(this)
+
+        viewModel.database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database-name").build()
     }
 
     override fun onMapReady(p0: GoogleMap?) {
         val map = p0!!
-        map.setOnInfoWindowClickListener {
-            val i = Intent(this, GameActivity::class.java)
-            i.putExtra("url", (it.tag as Level).url)
-            startActivity(i)
-        }
 
         map.uiSettings.apply {
             isCompassEnabled = false
@@ -80,11 +79,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                 }
 
-            map.setInfoWindowAdapter(
-                CustomInfoWindow(
-                    layoutInflater
-                )
-            )
+            map.setOnMarkerClickListener {
+                _markerDialog.setup(it.tag as Level)
+                _markerDialog.show(supportFragmentManager, null)
+                true
+            }
         })
 
         viewModel.isLoading.observe(this, Observer {

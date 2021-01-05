@@ -1,4 +1,4 @@
-package it.al.blockbreakerworld.game
+package it.al.blockbreakerworld.engine
 
 object ScreenMetrics {
     var width: Int = 0

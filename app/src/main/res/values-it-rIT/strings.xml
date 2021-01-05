@@ -9,4 +9,6 @@
     <string name="txt_error">Errore nel download</string>
     <string name="txt_level_select">Seleziona livello</string>
     <string name="btn_begin">Inizia</string>
+    <string name="txt_scoreboard_title">Classifica</string>
+    <string name="txt_no_record">Nessun record registrato</string>
 </resources>
